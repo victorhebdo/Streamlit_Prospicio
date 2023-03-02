@@ -21,8 +21,20 @@ if st.button("Predict"):
                 }
 
     response = requests.get(url, params = params)
-    data = response.json()["prediction"]
-    if data == 1:
+    result = response.json()["prediction"]
+    if result == 1:
         st.success("The company is about to fundraise !")
     else:
         st.error("The company will not fundraise soon")
+
+
+    st.write("## Company Information")
+    st.write(f"The information for **{company}** :")
+    st.write("")
+    st.write("### Administrative Data")
+    st.write(f"- Country : **{data['country_code'].upper()}** ")
+    industry_list = ', '.join([industry.strip(" '").replace("_", " ") for industry in data['industries_cleaned'].strip('{}').split(',')])
+    st.write(f"- Industries : **{industry_list}**")
+    st.write("### Financial Data")
+    st.write("- Revenue: $1,234,567")
+    st.write("- Net Income: $123,456")
